@@ -1,6 +1,8 @@
 # hypertrack_views_flutter
 
-A new flutter plugin project.
+trying to create an interface for the hypertrack views sdk in flutter
+
+first time using kotlin and swift, and I don't have a mac lmao
 
 ## Getting Started
 
