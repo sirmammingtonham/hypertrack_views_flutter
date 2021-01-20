@@ -1,8 +1,8 @@
 name: hypertrack_views_flutter
 description: A new flutter plugin project.
 version: 0.0.1
-author:
-homepage:
+author: yeeb
+homepage: https://github.com/sirmammingtonham/hypertrack_views_flutter
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  streams_channel: ^0.3.0
 
 dev_dependencies:
   flutter_test:

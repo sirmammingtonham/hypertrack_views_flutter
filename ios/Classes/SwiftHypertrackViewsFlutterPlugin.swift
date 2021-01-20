@@ -10,7 +10,7 @@ public class SwiftHypertrackViewsFlutterPlugin: NSObject, FlutterPlugin {
   let encoder = JSONEncoder()
 
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "hypertrack_views_flutter", binaryMessenger: registrar.messenger())
+    let channel = FlutterMethodChannel(name: "hypertrack_views_flutter/methods", binaryMessenger: registrar.messenger())
     let instance = SwiftHypertrackViewsFlutterPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
@@ -23,7 +23,7 @@ public class SwiftHypertrackViewsFlutterPlugin: NSObject, FlutterPlugin {
       case "initialize":
         guard let key = call.arguments as? String else {
             result(
-              FlutterError( code: "squabble", 
+              FlutterError( code: "squabbit", 
                 message: "Invalid arguments",
                 details: "Expected 1 String arg." ))
             return
@@ -33,7 +33,7 @@ public class SwiftHypertrackViewsFlutterPlugin: NSObject, FlutterPlugin {
       case "getDeviceMovementStatus":
         guard let deviceId = call.arguments as? String else {
               result(
-                FlutterError( code: "squabble", 
+                FlutterError( code: "squabbit", 
                   message: "Invalid arguments",
                   details: "Expected 1 String arg." ))
               return
@@ -56,7 +56,7 @@ public class SwiftHypertrackViewsFlutterPlugin: NSObject, FlutterPlugin {
       case "subscribeToDeviceUpdates": //TODO
         guard let deviceId = call.arguments as? String else {
               result(
-                FlutterError( code: "squabble", 
+                FlutterError( code: "squabbit", 
                   message: "Invalid arguments",
                   details: "Expected 1 String arg." ))
               return

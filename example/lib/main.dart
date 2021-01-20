@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:hypertrack_views_flutter/hypertrack_views_flutter.dart';
 
+import 'strings.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -38,9 +40,7 @@ class _MyAppState extends State<MyApp> {
     // setState to update our non-existent appearance.
     if (!mounted) return;
 
-    views = HypertrackViewsFlutter(
-        ""
-      );
+    views = HypertrackViewsFlutter(PUBLISHABLE_KEY);
 
     setState(() {
       _platformVersion = platformVersion;
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> test() async {
     print("something");
-    var test = views.getDeviceMovementStatus("");
+    var test = views.getDeviceMovementStatus(DEVICE_ID);
   }
 
   @override
