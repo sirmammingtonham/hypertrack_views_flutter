@@ -6,6 +6,7 @@ import 'package:streams_channel/streams_channel.dart';
 
 // model imports
 import 'package:hypertrack_views_flutter/models/movement_status.dart';
+import 'package:hypertrack_views_flutter/models/device_update.dart';
 
 class HypertrackViewsFlutter {
   static const MethodChannel _channel =
@@ -34,7 +35,11 @@ class HypertrackViewsFlutter {
     return MovementStatus.fromJson(json.decode(serialized));
   }
 
-  Stream subscribeToDeviceUpdates(String deviceId) {
-    return _stream.receiveBroadcastStream(deviceId);
+  Stream<DeviceUpdate> subscribeToDeviceUpdates(String deviceId) {
+    return _stream
+        .receiveBroadcastStream(deviceId)
+        .map<DeviceUpdate>((eventData) {
+      return DeviceUpdate.fromJson(eventData);
+    });
   }
 }

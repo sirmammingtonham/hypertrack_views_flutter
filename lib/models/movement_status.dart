@@ -1,7 +1,7 @@
-import 'device_status.dart';
-import 'location.dart';
-import 'trip.dart';
-import 'device_info.dart';
+import 'submodels/device_status.dart';
+import 'submodels/location.dart';
+import 'submodels/trip.dart';
+import 'submodels/device_info.dart';
 
 class MovementStatus {
   String deviceId;

@@ -49,7 +49,10 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> test() async {
     print("something");
-    var test = views.getDeviceMovementStatus(DEVICE_ID);
+    // var test = views.getDeviceMovementStatus(DEVICE_ID);
+    views.subscribeToDeviceUpdates(DEVICE_ID).listen((event) {
+      print(event);
+    });
   }
 
   @override
