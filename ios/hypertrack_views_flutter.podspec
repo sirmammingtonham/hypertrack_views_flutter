@@ -20,4 +20,12 @@ A new flutter plugin project.
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
+  s.ios.deployment_target = '11.2'
+  s.dependency 'HyperTrackViews'
+
+  s.pods_project.targets.each do |t|
+    t.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.2'
+    end
+  end
 end

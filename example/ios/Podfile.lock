@@ -1,0 +1,64 @@
+PODS:
+  - AppSyncRealTimeClient (1.0.1):
+    - Starscream (~> 3.0.2)
+  - AWSAppSync (3.0.2):
+    - AppSyncRealTimeClient (~> 1.0.0)
+    - AWSCore (~> 2.12.0)
+    - ReachabilitySwift (~> 5.0.0)
+    - SQLite.swift (~> 0.12.2)
+  - AWSCore (2.12.7)
+  - Flutter (1.0.0)
+  - hypertrack_views_flutter (0.0.1):
+    - Flutter
+    - HyperTrackViews
+  - HyperTrackViews (0.6.0):
+    - AWSAppSync (= 3.0.2)
+    - HyperTrackViews/Core (= 0.6.0)
+  - HyperTrackViews/Core (0.6.0):
+    - AWSAppSync (= 3.0.2)
+  - ReachabilitySwift (5.0.0)
+  - SQLite.swift (0.12.2):
+    - SQLite.swift/standard (= 0.12.2)
+  - SQLite.swift/standard (0.12.2)
+  - Starscream (3.0.6)
+  - streams_channel (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - hypertrack_views_flutter (from `.symlinks/plugins/hypertrack_views_flutter/ios`)
+  - streams_channel (from `.symlinks/plugins/streams_channel/ios`)
+
+SPEC REPOS:
+  trunk:
+    - AppSyncRealTimeClient
+    - AWSAppSync
+    - AWSCore
+    - HyperTrackViews
+    - ReachabilitySwift
+    - SQLite.swift
+    - Starscream
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  hypertrack_views_flutter:
+    :path: ".symlinks/plugins/hypertrack_views_flutter/ios"
+  streams_channel:
+    :path: ".symlinks/plugins/streams_channel/ios"
+
+SPEC CHECKSUMS:
+  AppSyncRealTimeClient: 63c44a04e7ce32e14f79836cc184cf800f71ac7a
+  AWSAppSync: 8fba81ebe3ec9423e35d4efd035cc01322cf3ebd
+  AWSCore: 2f0f88ae94a63a198274d683c7d0e18709d7090b
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  hypertrack_views_flutter: 1669ed61d2edf16cd987fc1aa21c9695e5e73de0
+  HyperTrackViews: 8c5068c2cb8d7337fe89d4c298085a2df83611cd
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
+  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
+  streams_channel: 16855ffd0568eded9563b2fec6a1bfa94420b353
+
+PODFILE CHECKSUM: 1809fe11cea1f5e353244fe8cb7c51ddbf9844e9
+
+COCOAPODS: 1.9.1
