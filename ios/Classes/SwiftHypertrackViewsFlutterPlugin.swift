@@ -46,7 +46,10 @@ public class SwiftHypertrackViewsFlutterPlugin: NSObject, FlutterPlugin {
                 
                 switch res {
                 case let .success(movementStatus):
-                    result(movementStatus.toJSON())
+                    if let data = try? JSONSerialization.data(withJSONObject: movementStatus.toJSON(), options: []) {
+                        let serializedString = String(data: data, encoding: .utf8)
+                        result(serializedString)
+                    }
                 case let .failure(error):
                     result(
                         FlutterError( code: "bruhmoment",
