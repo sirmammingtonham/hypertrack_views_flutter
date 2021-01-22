@@ -13,8 +13,6 @@ import io.flutter.plugin.common.MethodChannel.Result
 import app.loup.streams_channel.StreamsChannel
 import io.flutter.plugin.common.EventChannel
 
-
-import com.google.gson.Gson
 import com.hypertrack.sdk.views.DeviceUpdatesHandler
 import com.hypertrack.sdk.views.HyperTrackViews
 import com.hypertrack.sdk.views.dao.Location
@@ -80,7 +78,13 @@ class HypertrackViewsFlutterPlugin : FlutterPlugin, MethodCallHandler {
                     return
                 }
                 mHyperTrackView.getDeviceMovementStatus(call.arguments as String)
-                { result.success(Gson().toJson(it as MovementStatus)) }
+                {
+                    if (it != null) {
+                        result.success(it.toMap())
+                    } else {
+                        result.error("bruhmoment", "response was null", "good luck debugging")
+                    }
+                }
 
             }
             "stopAllUpdates" -> mHyperTrackView.stopAllUpdates()
@@ -93,42 +97,70 @@ class HypertrackViewsFlutterPlugin : FlutterPlugin, MethodCallHandler {
     private fun startListening(deviceId: String, emitter: EventChannel.EventSink) {
         mHyperTrackView.subscribeToDeviceUpdates(deviceId,
                 object : DeviceUpdatesHandler {
-                    private val args: HashMap<String, Any> = HashMap()
+                    private val movementStatus: HashMap<String, Any?> = hashMapOf(
+                            "device_id" to deviceId,
+
+                            "device_info.app_version_number" to null,
+                            "device_info.app_version_string" to null,
+                            "device_info.device_brand" to null,
+                            "device_info.device_model" to null,
+                            "device_info.name" to null,
+                            "device_info.os_name" to null,
+                            "device_info.os_version" to null,
+                            "device_info.sdk_version" to null,
+                            "device_info.battery" to null,
+
+                            "device_status.createdAt" to null,
+                            "device_status.status" to null,
+
+                            "location.accuracy" to null,
+                            "location.altitude" to null,
+                            "location.bearing" to null,
+                            "location.speed" to null,
+                            "location.latitude" to null,
+                            "location.longitude" to null,
+                            "location.recordedAt" to null,
+
+                            "trips" to mutableListOf<HashMap<String, Any?>>()
+                    )
 
                     override fun onLocationUpdateReceived(location: Location) {
-                        args["deviceId"] = deviceId
-                        args["location"] = Gson().toJson(location)
-                        emitter.success(args)
+                        movementStatus["location.accuracy"] = location.accuracy
+                        movementStatus["location.altitude"] = location.altitude
+                        movementStatus["location.bearing"] = location.bearing
+                        movementStatus["location.speed"] = location.speed
+                        movementStatus["location.latitude"] = location.latitude
+                        movementStatus["location.longitude"] = location.longitude
+                        movementStatus["location.recordedAt"] = location.recordedAt
+                        emitter.success(movementStatus)
                     }
 
                     override fun onBatteryStateUpdateReceived(@MovementStatus.BatteryState i: Int) {
-                        args["deviceId"] = deviceId
-                        args["batteryState"] = i
-                        emitter.success(args)
+                        movementStatus["device_info.battery"] = i
+                        emitter.success(movementStatus)
                     }
 
                     override fun onStatusUpdateReceived(statusUpdate: StatusUpdate) {
-                        args["deviceId"] = deviceId
-                        args["statusUpdate"] = Gson().toJson(statusUpdate)
-                        emitter.success(args)
+                        movementStatus["device_status.createdAt"] = statusUpdate.recordedAt
+                        movementStatus["device_status.status"] = statusUpdate.value
+                        emitter.success(movementStatus)
                     }
 
                     override fun onTripUpdateReceived(trip: Trip) {
-                        args["deviceId"] = deviceId
-                        args["trip"] = Gson().toJson(trip)
-                        emitter.success(args)
+                        @Suppress("UNCHECKED_CAST")
+                        (movementStatus["trips"] as? MutableList<HashMap<String, Any?>>)?.add(trip.toMap())
+                        emitter.success(movementStatus)
                     }
 
                     override fun onError(exception: Exception, deviceId: String) {
-                        args["deviceId"] = deviceId
-                        args["exception"] = Gson().toJson(exception)
-                        emitter.success(args)
+                        emitter.error("bruhmoment",
+                                "Failed to get MovementStatus, ensure deviceId exists!",
+                                exception.message
+                        )
                     }
 
                     override fun onCompleted(deviceId: String) {
-                        args["deviceId"] = deviceId
-                        args["completed"] = true
-                        emitter.success(args)
+                        emitter.endOfStream()
                     }
                 }
         )
