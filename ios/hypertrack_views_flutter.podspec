@@ -22,6 +22,7 @@ A new flutter plugin project.
   s.swift_version = '5.0'
   s.ios.deployment_target = '11.2'
   s.dependency 'HyperTrackViews'
+  s.dependency 'streams_channel'
 
   # s.pods_project.targets.each do |t|
   #   t.build_configurations.each do |config|
