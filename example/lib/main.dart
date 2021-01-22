@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> testSnapshot() async {
     print("something");
     var test = await views.getDeviceMovementStatus(DEVICE_ID);
-    print(test.locationCoords);
+    print(test);
     // views.subscribeToDeviceUpdates(DEVICE_ID).listen((event) {
     //   print(event);
     // });

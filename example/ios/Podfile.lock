@@ -11,6 +11,7 @@ PODS:
   - hypertrack_views_flutter (0.0.1):
     - Flutter
     - HyperTrackViews
+    - streams_channel
   - HyperTrackViews (0.6.0):
     - AWSAppSync (= 3.0.2)
     - HyperTrackViews/Core (= 0.6.0)
@@ -52,7 +53,7 @@ SPEC CHECKSUMS:
   AWSAppSync: 8fba81ebe3ec9423e35d4efd035cc01322cf3ebd
   AWSCore: 2f0f88ae94a63a198274d683c7d0e18709d7090b
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  hypertrack_views_flutter: 1669ed61d2edf16cd987fc1aa21c9695e5e73de0
+  hypertrack_views_flutter: e822feb5b766ba89bcd9e2518b59409be58046a3
   HyperTrackViews: 8c5068c2cb8d7337fe89d4c298085a2df83611cd
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
