@@ -46,8 +46,16 @@ class _MyAppState extends State<MyApp> {
       _platformVersion = platformVersion;
     });
   }
+  Future<void> testSnapshot() async {
+    print("something");
+    var test = await views.getDeviceMovementStatus(DEVICE_ID);
+    print(test.locationCoords);
+    // views.subscribeToDeviceUpdates(DEVICE_ID).listen((event) {
+    //   print(event);
+    // });
+  }
 
-  Future<void> test() async {
+  Future<void> testStream() async {
     print("something");
     // var test = views.getDeviceMovementStatus(DEVICE_ID);
     views.subscribeToDeviceUpdates(DEVICE_ID).listen((event) {
@@ -66,7 +74,7 @@ class _MyAppState extends State<MyApp> {
           child: Text('Running on: $_platformVersion\n'),
         ),
         floatingActionButton:
-            FloatingActionButton(onPressed: test, child: Icon(Icons.healing)),
+            FloatingActionButton(onPressed: testSnapshot, child: Icon(Icons.healing)),
       ),
     );
   }

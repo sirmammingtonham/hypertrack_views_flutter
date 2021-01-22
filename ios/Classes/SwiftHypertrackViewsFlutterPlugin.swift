@@ -29,6 +29,7 @@ public class SwiftHypertrackViewsFlutterPlugin: NSObject, FlutterPlugin {
             return
        }
         mHyperTrackView = HyperTrackViews(publishableKey: key)
+        result(true)
 
        case "getDeviceMovementStatus":
          guard let deviceId = call.arguments as? String else {
@@ -38,19 +39,20 @@ public class SwiftHypertrackViewsFlutterPlugin: NSObject, FlutterPlugin {
                    details: "Expected 1 String arg." ))
                return
          }
+         
          cancelSubscription = mHyperTrackView.movementStatus(for: deviceId) { [weak self] res in
              guard let self = self else { return }
 
              switch res {
              case let .success(movementStatus):
-                if let data = try? JSONSerialization.jsonData(with: movementStatus), let str = String(data: data, encoding: .utf8) {
+                if let data = try? encoder.encode(movementStatus.location), let str = String(data: data, encoding: .utf8) {
                     result(str)
                 }
              case let .failure(error):
                result(
                FlutterError( code: "bruhmoment",
-                 message: "Failed to get MovementStatus",
-                 details: "Good luck debugging" ))
+                 message: "Failed to get MovementStatus, ensure deviceId exists!",
+                 details: String(describing: error) ))
              }
          }
 

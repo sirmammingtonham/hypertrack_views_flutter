@@ -31,7 +31,7 @@ class HypertrackViewsFlutter {
   Future<MovementStatus> getDeviceMovementStatus(String deviceId) async {
     String serialized =
         await _channel.invokeMethod('getDeviceMovementStatus', deviceId);
-    log(serialized);
+    print(serialized);
     return MovementStatus.fromJson(json.decode(serialized));
   }
 

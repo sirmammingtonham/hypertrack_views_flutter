@@ -23,9 +23,9 @@ A new flutter plugin project.
   s.ios.deployment_target = '11.2'
   s.dependency 'HyperTrackViews'
 
-  s.pods_project.targets.each do |t|
-    t.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.2'
-    end
-  end
+  # s.pods_project.targets.each do |t|
+  #   t.build_configurations.each do |config|
+  #     config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.2'
+  #   end
+  # end
 end
