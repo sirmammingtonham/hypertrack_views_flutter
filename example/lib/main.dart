@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
-
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:hypertrack_views_flutter/hypertrack_views_flutter.dart';
 
 import 'strings.dart';
@@ -16,50 +14,29 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  String _currentLocation = 'Unknown';
   HypertrackViewsFlutter views;
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await HypertrackViewsFlutter.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
     views = HypertrackViewsFlutter(PUBLISHABLE_KEY);
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
   }
+
   Future<void> testSnapshot() async {
-    print("something");
-    var test = await views.getDeviceMovementStatus(DEVICE_ID);
-    print(test);
-    // views.subscribeToDeviceUpdates(DEVICE_ID).listen((event) {
-    //   print(event);
-    // });
+    print("in testSnapshot");
+    var test = await views.getDeviceUpdate(DEVICE_ID);
+    setState(() {
+      _currentLocation = test.locationCoords.toString();
+    });
   }
 
   Future<void> testStream() async {
-    print("something");
-    // var test = views.getDeviceMovementStatus(DEVICE_ID);
+    print("in testStream");
     views.subscribeToDeviceUpdates(DEVICE_ID).listen((event) {
-      print(event);
+      setState(() {
+        _currentLocation = event.locationCoords.toString();
+      });
     });
   }
 
@@ -67,15 +44,34 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
-        floatingActionButton:
-            FloatingActionButton(onPressed: testSnapshot, child: Icon(Icons.healing)),
-      ),
+          appBar: AppBar(
+            title: const Text('Plugin example app'),
+          ),
+          body: Column(
+            children: [
+              SizedBox(height: 50),
+              Text(
+                'Current location:',
+                style: TextStyle(fontSize: 24),
+              ),
+              SizedBox(height: 10),
+              Text(
+                '$_currentLocation',
+                style: TextStyle(fontSize: 24),
+              ),
+              SizedBox(height: 50),
+              ListTile(
+                  leading: FloatingActionButton(
+                      onPressed: testSnapshot, child: Icon(Icons.location_on)),
+                  title: Text("getDeviceUpdate")),
+              SizedBox(height: 10),
+              ListTile(
+                  leading: FloatingActionButton(
+                      onPressed: testStream,
+                      child: Icon(Icons.location_searching)),
+                  title: Text("subscribeToDeviceUpdates")),
+            ],
+          )),
     );
   }
 }

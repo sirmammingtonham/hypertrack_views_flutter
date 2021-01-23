@@ -24,6 +24,7 @@ extension MovementStatus.Trip {
         }
         return [
             "trip_id": id,
+            "status": nil,
             "startedAt": startedAt.description,
             "metadata": metadata,
             "summary": summary,

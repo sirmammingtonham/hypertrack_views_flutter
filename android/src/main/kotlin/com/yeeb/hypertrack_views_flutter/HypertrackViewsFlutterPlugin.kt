@@ -1,7 +1,6 @@
 package com.yeeb.hypertrack_views_flutter
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.NonNull
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -38,18 +37,6 @@ class HypertrackViewsFlutterPlugin : FlutterPlugin, MethodCallHandler {
 
         methodChannel.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
-
-        eventChannel.setStreamHandlerFactory {
-            object : EventChannel.StreamHandler {
-                override fun onListen(arguments: Any, eventSink: EventChannel.EventSink) {
-                    startListening(arguments as String, eventSink)
-                }
-
-                override fun onCancel(arguments: Any) {
-                    cancelListening(arguments as String)
-                }
-            }
-        }
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
@@ -60,9 +47,21 @@ class HypertrackViewsFlutterPlugin : FlutterPlugin, MethodCallHandler {
         when (call.method) {
             "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
             "initialize" -> {
-                Log.d("HypertrackViewsAndroid", "Initializing")
                 if (call.arguments != null) {
                     mHyperTrackView = HyperTrackViews.getInstance(context, call.arguments as String)
+
+                    eventChannel.setStreamHandlerFactory {
+                        object : EventChannel.StreamHandler {
+                            override fun onListen(arguments: Any, eventSink: EventChannel.EventSink) {
+                                startListening(arguments as String, eventSink)
+                            }
+
+                            override fun onCancel(arguments: Any) {
+                                cancelListening(arguments as String)
+                            }
+                        }
+                    }
+
                     result.success(true)
                 } else {
                     result.error("squabbit", "Invalid arguments", "Expected at least 1 arg")
@@ -95,35 +94,19 @@ class HypertrackViewsFlutterPlugin : FlutterPlugin, MethodCallHandler {
 
     // Listeners
     private fun startListening(deviceId: String, emitter: EventChannel.EventSink) {
+        var movementStatus: HashMap<String, Any?> = hashMapOf()
+        mHyperTrackView.getDeviceMovementStatus(deviceId)
+        {
+            if (it != null) {
+                movementStatus = it.toMap()
+                emitter.success(movementStatus)
+            } else {
+                emitter.error("bruhmoment", "response was null", "good luck debugging")
+            }
+        }
+
         mHyperTrackView.subscribeToDeviceUpdates(deviceId,
                 object : DeviceUpdatesHandler {
-                    private val movementStatus: HashMap<String, Any?> = hashMapOf(
-                            "device_id" to deviceId,
-
-                            "device_info.app_version_number" to null,
-                            "device_info.app_version_string" to null,
-                            "device_info.device_brand" to null,
-                            "device_info.device_model" to null,
-                            "device_info.name" to null,
-                            "device_info.os_name" to null,
-                            "device_info.os_version" to null,
-                            "device_info.sdk_version" to null,
-                            "device_info.battery" to null,
-
-                            "device_status.createdAt" to null,
-                            "device_status.status" to null,
-
-                            "location.accuracy" to null,
-                            "location.altitude" to null,
-                            "location.bearing" to null,
-                            "location.speed" to null,
-                            "location.latitude" to null,
-                            "location.longitude" to null,
-                            "location.recordedAt" to null,
-
-                            "trips" to mutableListOf<HashMap<String, Any?>>()
-                    )
-
                     override fun onLocationUpdateReceived(location: Location) {
                         movementStatus["location.accuracy"] = location.accuracy
                         movementStatus["location.altitude"] = location.altitude

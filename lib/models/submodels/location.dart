@@ -1,11 +1,9 @@
-import 'geometry.dart';
-
 class Location {
-  // /// Latitude in degrees. Negatives are for southern hemisphere.
-  // double latitude;
-  // /// Longitude in degrees. Negatives are for western hemisphere.
-  // double longitude;
-  Geometry geometry;
+  /// Latitude in degrees. Negatives are for southern hemisphere.
+  double latitude;
+
+  /// Longitude in degrees. Negatives are for western hemisphere.
+  double longitude;
 
   /// Altitude in m. Could be `null`, if value is not available.
   double altitude;
@@ -23,31 +21,34 @@ class Location {
   String recordedAt;
 
   Location(
-      {this.accuracy,
+      {this.latitude,
+      this.longitude,
+      this.accuracy,
       this.bearing,
-      this.geometry,
       this.recordedAt,
       this.speed});
 
-  Location.fromJson(Map<String, dynamic> json) {
-    accuracy = json['accuracy'];
-    bearing = json['bearing'];
-    geometry = json['geometry'] != null
-        ? new Geometry.fromJson(json['geometry'])
-        : null;
-    recordedAt = json['recorded_at'];
-    speed = json['speed'];
+  List<double> get locationCoords => [latitude, longitude];
+
+  Location.fromJson(Map<dynamic, dynamic> json) {
+    latitude = json['location.latitude'];
+    longitude = json['location.longitude'];
+    altitude = json['location.altitude'];
+    speed = json['location.speed'];
+    bearing = json['location.bearing'];
+    accuracy = json['location.accuracy'];
+    recordedAt = json['location.recordedAt'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['accuracy'] = this.accuracy;
-    data['bearing'] = this.bearing;
-    if (this.geometry != null) {
-      data['geometry'] = this.geometry.toJson();
-    }
-    data['recorded_at'] = this.recordedAt;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['altitude'] = this.altitude;
     data['speed'] = this.speed;
+    data['bearing'] = this.bearing;
+    data['accuracy'] = this.accuracy;
+    data['recordedAt'] = this.recordedAt;
     return data;
   }
 }

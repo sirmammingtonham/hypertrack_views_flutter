@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
 import 'package:flutter/services.dart';
 import 'package:streams_channel/streams_channel.dart';
 
 // model imports
 import 'package:hypertrack_views_flutter/models/movement_status.dart';
-import 'package:hypertrack_views_flutter/models/device_update.dart';
 
 class HypertrackViewsFlutter {
   static const MethodChannel _channel =
@@ -21,25 +18,30 @@ class HypertrackViewsFlutter {
   }
 
   final String _publishableKey;
+  bool initialized;
 
   HypertrackViewsFlutter(this._publishableKey) {
     _channel.invokeMethod('initialize', _publishableKey).then((_) {
+      initialized = true;
       print('hypertrack_views_flutter initialized successfully');
+    }).catchError((_) {
+      initialized = false;
+      print('ERROR! hypertrack_views_flutter failed to initialize');
     });
   }
 
-  Future<MovementStatus> getDeviceMovementStatus(String deviceId) async {
-    String serialized =
-        await _channel.invokeMethod('getDeviceMovementStatus', deviceId);
-    print(serialized);
-    return MovementStatus.fromJson(json.decode(serialized));
+  Future<MovementStatus> getDeviceUpdate(String deviceId) async {
+    assert(initialized);
+    var data = await _channel.invokeMethod('getDeviceMovementStatus', deviceId);
+    return MovementStatus.fromJson(data);
   }
 
-  Stream<DeviceUpdate> subscribeToDeviceUpdates(String deviceId) {
+  Stream<MovementStatus> subscribeToDeviceUpdates(String deviceId) {
+    assert(initialized);
     return _stream
         .receiveBroadcastStream(deviceId)
-        .map<DeviceUpdate>((eventData) {
-      return DeviceUpdate.fromJson(eventData);
+        .map<MovementStatus>((eventData) {
+      return MovementStatus.fromJson(eventData);
     });
   }
 }
