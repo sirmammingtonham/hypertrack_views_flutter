@@ -66,7 +66,7 @@ class Device {
   Device.fromJson(Map<dynamic, dynamic> json) {
     name = json['device_info.name'];
     battery = json['device_info.battery'];
-    appVersionNumber = json['device_info.app_version_number'];
+    appVersionNumber = json['device_info.app_version_number'].toString();
     appVersionString = json['device_info.app_version_string'];
     deviceBrand = json['device_info.device_brand'];
     deviceModel = json['device_info.device_model'];
