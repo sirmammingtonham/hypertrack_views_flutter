@@ -6,6 +6,8 @@ installs the hypertrack views sdk for [Android](https://github.com/hypertrack/vi
 
 first time using kotlin and swift :)
 
+https://pub.dev/packages/hypertrack_views_flutter/install
+
 ## Usage
 
 Initialize the plugin with `HypertrackViewsFlutter views = HypertrackViewsFlutter(PUBLISHABLE_KEY);`
