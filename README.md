@@ -2,16 +2,19 @@
 
 trying to create an interface for the hypertrack views sdk in flutter
 
-first time using kotlin and swift, and I don't have a mac lmao
+installs the hypertrack views sdk for [Android](https://github.com/hypertrack/views-android) and [iOS](https://github.com/hypertrack/views-ios), and uses flutter platform channels to communicate between them and the dart api.
 
-## Getting Started
+first time using kotlin and swift :)
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+# Usage
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Initialize the plugin with `HypertrackViewsFlutter views = HypertrackViewsFlutter(PUBLISHABLE_KEY);`
 
+Get a single device update with `MovementStatus test = await views.getDeviceUpdate(DEVICE_ID);`
+
+Subscribe to device updates with 
+```dart
+views.subscribeToDeviceUpdates(DEVICE_ID).listen((MovementStatus event) {
+  do stuff;
+});
+```
