@@ -1,9 +1,14 @@
+library hypertrack_views_flutter;
+
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:streams_channel/streams_channel.dart';
 
 // model imports
 import 'package:hypertrack_views_flutter/models/movement_status.dart';
+
+// exports
+export 'package:hypertrack_views_flutter/models/movement_status.dart';
 
 class HypertrackViewsFlutter {
   static const MethodChannel _channel =
